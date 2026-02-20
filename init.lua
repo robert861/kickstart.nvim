@@ -101,7 +101,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -619,13 +619,16 @@ require('lazy').setup({
       --    :Mason
       --
       -- You can press `g?` for help in this menu.
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        'lua-language-server', -- Lua Language server
-        'stylua', -- Used to format Lua code
-        'ruff', -- Python formatter and linter
-        'prettierd', -- JS/TS/JSON/CSS/Markdown formatter
-      })
+      local ensure_installed = {
+        'lua-language-server',
+        'pyright',
+        'typescript-language-server',
+        'bash-language-server',
+        'json-lsp',
+        'stylua',
+        'ruff',
+        'prettierd',
+      }
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
