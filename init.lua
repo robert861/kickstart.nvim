@@ -766,7 +766,7 @@ require('lazy').setup({
         -- <c-k>: Toggle signature help
         --
         -- See :h blink-cmp-config-keymap for defining your own keymap
-        preset = 'default',
+        preset = 'super-tab',
 
         -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
         --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
@@ -809,20 +809,15 @@ require('lazy').setup({
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
+    'sainnhe/gruvbox-material',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     config = function()
-      ---@diagnostic disable-next-line: missing-fields
-      require('tokyonight').setup {
-        styles = {
-          comments = { italic = false }, -- Disable italics in comments
-        },
-      }
+      vim.g.gruvbox_material_background = 'hard' -- 'hard', 'medium', or 'soft'
+      vim.g.gruvbox_material_foreground = 'mix' -- 'material', 'mix', or 'original'
+      vim.g.gruvbox_material_enable_italic = 0
+      vim.g.gruvbox_material_better_performance = 1
 
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      vim.cmd.colorscheme 'gruvbox-material'
     end,
   },
 
@@ -890,7 +885,23 @@ require('lazy').setup({
         'vimdoc',
         'yaml',
       }
-      require('nvim-treesitter').install(filetypes)
+      -- Install parsers async, then start highlighting for already-open buffers
+      require('nvim-treesitter').install(filetypes):await(function(err)
+        if not err then
+          vim.schedule(function()
+            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+              if vim.api.nvim_buf_is_loaded(buf) then
+                local ft = vim.bo[buf].filetype
+                if vim.list_contains(filetypes, ft) then
+                  pcall(vim.treesitter.start, buf)
+                end
+              end
+            end
+          end)
+        end
+      end)
+
+      -- For files opened after parsers are already cached
       vim.api.nvim_create_autocmd('FileType', {
         pattern = filetypes,
         callback = function() vim.treesitter.start() end,
