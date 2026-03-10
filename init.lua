@@ -84,8 +84,8 @@ I hope you enjoy your Neovim journey,
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
 
--- Set default working directory
-vim.cmd('cd G:\\Claude')
+-- Set default working directory (disabled — uses launch directory instead)
+-- vim.cmd('cd G:\\Claude')
 
 -- Use PowerShell for the built-in terminal
 vim.o.shell = 'pwsh'
@@ -112,7 +112,7 @@ vim.g.have_nerd_font = true
 vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.o.relativenumber = true
+vim.o.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
@@ -209,6 +209,10 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 
 -- Open a PowerShell terminal in a right vertical split
 vim.keymap.set('n', '<leader>tp', function() vim.cmd 'vsplit | terminal pwsh' end, { desc = '[T]erminal [P]owershell split' })
+vim.keymap.set('n', '<leader>ta', function()
+  vim.g.blink_cmp_enabled = not (vim.g.blink_cmp_enabled ~= false)
+  vim.notify('Autocomplete ' .. (vim.g.blink_cmp_enabled ~= false and 'enabled' or 'disabled'))
+end, { desc = '[T]oggle [A]utocomplete' })
 
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -744,6 +748,10 @@ require('lazy').setup({
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
     opts = {
+      enabled = function()
+        return vim.g.blink_cmp_enabled ~= false
+      end,
+
       keymap = {
         -- 'default' (recommended) for mappings similar to built-in completions
         --   <c-y> to accept ([y]es) the completion.
@@ -814,6 +822,7 @@ require('lazy').setup({
     config = function()
       vim.g.gruvbox_material_background = 'hard' -- 'hard', 'medium', or 'soft'
       vim.g.gruvbox_material_foreground = 'mix' -- 'material', 'mix', or 'original'
+      vim.g.gruvbox_material_transparent_background = 1 -- 1 = transparent, 2 = transparent + floating windows
       vim.g.gruvbox_material_enable_italic = 0
       vim.g.gruvbox_material_better_performance = 1
 
