@@ -83,5 +83,12 @@ if (-not $WtInstalled) {
     Write-Host "[!!] Windows Terminal not found - copy windows-terminal-settings.json manually" -ForegroundColor Red
 }
 
+# 6. Remind about Windows accent color (controls pane focus border)
+Write-Host ""
+Write-Host "[!!] MANUAL STEP: Set Windows accent color to match Tokyo Night" -ForegroundColor Yellow
+Write-Host "     The split-pane focus border uses the Windows accent color (not a Terminal setting)." -ForegroundColor Yellow
+Write-Host "     Go to Settings > Personalization > Colors > Accent color > Manual" -ForegroundColor Yellow
+Write-Host "     Set custom color to #7aa2f7 (Tokyo Night blue)" -ForegroundColor Yellow
+
 Write-Host ""
 Write-Host "Done! Restart Windows Terminal to see changes." -ForegroundColor Blue
