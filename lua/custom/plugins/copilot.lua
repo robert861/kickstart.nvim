@@ -19,9 +19,7 @@ return {
         panel = { enabled = false },
       }
 
-      vim.keymap.set('n', '<leader>tc', function()
-        require('copilot.suggestion').toggle_auto_trigger()
-      end, { desc = '[T]oggle [C]opilot' })
+      vim.keymap.set('n', '<leader>tc', function() require('copilot.suggestion').toggle_auto_trigger() end, { desc = '[T]oggle [C]opilot' })
     end,
   },
 }

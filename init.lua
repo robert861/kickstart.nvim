@@ -93,7 +93,6 @@ vim.o.shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command'
 vim.o.shellquote = ''
 vim.o.shellxquote = ''
 
-
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -180,6 +179,26 @@ vim.o.confirm = true
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+
+-- Exit insert mode with jk
+vim.keymap.set('i', 'jk', '<ESC>', { desc = 'Exit insert mode' })
+
+-- Increment/decrement numbers
+vim.keymap.set('n', '<leader>+', '<C-a>', { desc = 'Increment number' })
+vim.keymap.set('n', '<leader>-', '<C-x>', { desc = 'Decrement number' })
+
+-- Window splits
+vim.keymap.set('n', '<leader>sv', '<C-w>v', { desc = '[S]plit [V]ertically' })
+vim.keymap.set('n', '<leader>sh', '<C-w>s', { desc = '[S]plit [H]orizontally' })
+vim.keymap.set('n', '<leader>se', '<C-w>=', { desc = '[S]plit [E]qual size' })
+vim.keymap.set('n', '<leader>sx', '<cmd>close<CR>', { desc = '[S]plit close (e[X]it)' })
+
+-- Tab management
+vim.keymap.set('n', '<leader>to', '<cmd>tabnew<CR>', { desc = '[T]ab [O]pen new' })
+vim.keymap.set('n', '<leader>tx', '<cmd>tabclose<CR>', { desc = '[T]ab close (e[X]it)' })
+vim.keymap.set('n', '<leader>tn', '<cmd>tabn<CR>', { desc = '[T]ab [N]ext' })
+vim.keymap.set('n', '<leader>tb', '<cmd>tabp<CR>', { desc = '[T]ab [B]ack (previous)' })
+vim.keymap.set('n', '<leader>tf', '<cmd>tabnew %<CR>', { desc = '[T]ab open current [F]ile' })
 
 -- Diagnostic Config & Keymaps
 -- See :help vim.diagnostic.Opts
@@ -327,9 +346,13 @@ require('lazy').setup({
 
       -- Document existing key chains
       spec = {
-        { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
-        { '<leader>t', group = '[T]oggle' },
+        { '<leader>s', group = '[S]earch / [S]plit', mode = { 'n', 'v' } },
+        { '<leader>t', group = '[T]oggle / [T]ab' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>x', group = 'Diagnostics (Trouble)' },
+        { '<leader>l', group = '[L]azy' },
+        { '<leader>n', group = 'Swap [N]ext' },
+        { '<leader>p', group = 'Swap [P]revious' },
       },
     },
   },
@@ -748,9 +771,7 @@ require('lazy').setup({
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
     opts = {
-      enabled = function()
-        return vim.g.blink_cmp_enabled ~= false
-      end,
+      enabled = function() return vim.g.blink_cmp_enabled ~= false end,
 
       keymap = {
         -- 'default' (recommended) for mappings similar to built-in completions
@@ -812,21 +833,49 @@ require('lazy').setup({
     },
   },
 
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'sainnhe/gruvbox-material',
+  { -- Colorscheme: tokyonight with josean-dev custom colors
+    'folke/tokyonight.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     config = function()
-      vim.g.gruvbox_material_background = 'hard' -- 'hard', 'medium', or 'soft'
-      vim.g.gruvbox_material_foreground = 'mix' -- 'material', 'mix', or 'original'
-      vim.g.gruvbox_material_transparent_background = 1 -- 1 = transparent, 2 = transparent + floating windows
-      vim.g.gruvbox_material_enable_italic = 0
-      vim.g.gruvbox_material_better_performance = 1
+      local transparent = true
 
-      vim.cmd.colorscheme 'gruvbox-material'
+      local bg = '#011628'
+      local bg_dark = '#011423'
+      local bg_highlight = '#143652'
+      local bg_search = '#0A64AC'
+      local bg_visual = '#275378'
+      local fg = '#CBE0F0'
+      local fg_dark = '#B4D0E9'
+      local fg_gutter = '#627E97'
+      local border = '#547998'
+
+      require('tokyonight').setup {
+        style = 'night',
+        transparent = transparent,
+        styles = {
+          sidebars = transparent and 'transparent' or 'dark',
+          floats = transparent and 'transparent' or 'dark',
+        },
+        on_colors = function(colors)
+          colors.bg = bg
+          colors.bg_dark = transparent and colors.none or bg_dark
+          colors.bg_float = transparent and colors.none or bg_dark
+          colors.bg_highlight = bg_highlight
+          colors.bg_popup = bg_dark
+          colors.bg_search = bg_search
+          colors.bg_sidebar = transparent and colors.none or bg_dark
+          colors.bg_statusline = transparent and colors.none or bg_dark
+          colors.bg_visual = bg_visual
+          colors.border = border
+          colors.fg = fg
+          colors.fg_dark = fg_dark
+          colors.fg_float = fg
+          colors.fg_gutter = fg_gutter
+          colors.fg_sidebar = fg_dark
+        end,
+      }
+
+      vim.cmd.colorscheme 'tokyonight'
     end,
   },
 
@@ -850,19 +899,6 @@ require('lazy').setup({
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
-
-      -- Simple and easy statusline.
-      --  You could remove this setup call if you don't like it,
-      --  and try some other statusline plugin
-      local statusline = require 'mini.statusline'
-      -- set use_icons to true if you have a Nerd Font
-      statusline.setup { use_icons = vim.g.have_nerd_font }
-
-      -- You can configure sections in the statusline by overriding their
-      -- default behavior. For example, here we set the section for
-      -- cursor location to LINE:COLUMN
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function() return '%2l:%-2v' end
 
       -- ... and there is more!
       --  Check out: https://github.com/nvim-mini/mini.nvim
@@ -900,9 +936,7 @@ require('lazy').setup({
             for _, buf in ipairs(vim.api.nvim_list_bufs()) do
               if vim.api.nvim_buf_is_loaded(buf) then
                 local ft = vim.bo[buf].filetype
-                if vim.list_contains(filetypes, ft) then
-                  pcall(vim.treesitter.start, buf)
-                end
+                if vim.list_contains(filetypes, ft) then pcall(vim.treesitter.start, buf) end
               end
             end
           end)
