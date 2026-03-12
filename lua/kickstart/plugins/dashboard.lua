@@ -39,13 +39,13 @@ return {
     },
   },
   config = function(_, opts)
-    -- Apply green/teal dashboard colors after any colorscheme load
+    -- Apply Tokyo Night accent colors after any colorscheme load
     local function set_dashboard_colors()
-      vim.api.nvim_set_hl(0, 'SnacksDashboardHeader', { fg = '#8ec07c' })
-      vim.api.nvim_set_hl(0, 'SnacksDashboardKey', { fg = '#8ec07c' })
-      vim.api.nvim_set_hl(0, 'SnacksDashboardDesc', { fg = '#a9b665' })
-      vim.api.nvim_set_hl(0, 'SnacksDashboardIcon', { fg = '#a9b665' })
-      vim.api.nvim_set_hl(0, 'SnacksDashboardFooter', { fg = '#7daea3' })
+      vim.api.nvim_set_hl(0, 'SnacksDashboardHeader', { fg = '#7aa2f7' })
+      vim.api.nvim_set_hl(0, 'SnacksDashboardKey', { fg = '#7aa2f7' })
+      vim.api.nvim_set_hl(0, 'SnacksDashboardDesc', { fg = '#c0caf5' })
+      vim.api.nvim_set_hl(0, 'SnacksDashboardIcon', { fg = '#7dcfff' })
+      vim.api.nvim_set_hl(0, 'SnacksDashboardFooter', { fg = '#565f89' })
     end
     -- Set now and re-apply whenever colorscheme changes
     vim.api.nvim_create_autocmd('ColorScheme', { callback = set_dashboard_colors })

@@ -84,9 +84,6 @@ I hope you enjoy your Neovim journey,
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
 
--- Set default working directory
-vim.cmd('cd C:\\Users\\Robert.Bailey\\Documents\\SKUNKWORKS')
-
 -- Use PowerShell for the built-in terminal
 vim.o.shell = 'pwsh'
 vim.o.shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command'

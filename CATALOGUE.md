@@ -93,8 +93,13 @@ Everything we've installed, configured, and customized — tracked so it can be 
 - Oh My Posh init with Tokyo Night theme
 - zoxide init (`cd` aliased to `z`)
 - eza alias for `ls` (long format, git status, icons, no clutter)
-- fzf config with fd backend, Josean blue/cyan color scheme, eza/bat previews
+- fzf config with fd backend, Tokyo Night color scheme, eza/bat previews
 - bat theme set to `tokyonight_night`
+- **PSFzf module** — bridges fzf with PSReadLine for shell keybindings:
+  - `Ctrl+T` — fuzzy file search (with bat preview)
+  - `Alt+C` — fuzzy directory jump (with eza tree preview)
+  - `Ctrl+R` — fuzzy command history search
+  - Install: `Install-PSResource -Name PSFzf -Scope CurrentUser -TrustRepository`
 - Profile location: `$PROFILE` (usually `Documents\PowerShell\Microsoft.PowerShell_profile.ps1`)
 
 ## System Dependencies
@@ -127,6 +132,21 @@ Everything we've installed, configured, and customized — tracked so it can be 
 - **Font:** JetBrainsMono Nerd Font
 - **Windows install:** `scoop bucket add nerd-fonts && scoop install nerd-fonts/JetBrainsMono-NF`
 - **Linux install:** Download from [nerdfonts.com](https://www.nerdfonts.com/) or use oh-my-posh font installer
+
+### PowerShell Modules
+| Module | Install Command | Purpose |
+|--------|----------------|---------|
+| `PSFzf` | `Install-PSResource -Name PSFzf -Scope CurrentUser -TrustRepository` | Bridges fzf with PSReadLine (Ctrl+T, Alt+C, Ctrl+R) |
+
+## New Machine Setup Checklist (Windows)
+
+1. **Install scoop packages:** `scoop install neovim ripgrep python ruff tree-sitter zig fzf fd eza zoxide bat`
+2. **Install Nerd Font:** `scoop bucket add nerd-fonts && scoop install nerd-fonts/JetBrainsMono-NF`
+3. **Install PSFzf module:** `Install-PSResource -Name PSFzf -Scope CurrentUser -TrustRepository`
+4. **Run terminal installer:** `terminal/install.ps1` (Windows Terminal settings, Oh My Posh theme)
+5. **Copy PowerShell profile:** `cp terminal/Microsoft.PowerShell_profile.ps1 $PROFILE`
+6. **Run `/setup-nvim`** to patch init.lua and install Neovim plugins + Mason tools
+7. **Restart terminal** and verify: `ls` (eza), `lt` (tree), `Ctrl+T` (fzf files), `Alt+C` (fzf dirs), `Ctrl+R` (fzf history)
 
 ## Installer Scripts
 | Script | Purpose |
