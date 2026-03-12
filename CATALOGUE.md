@@ -91,6 +91,10 @@ Everything we've installed, configured, and customized — tracked so it can be 
 
 ### PowerShell Profile
 - Oh My Posh init with Tokyo Night theme
+- zoxide init (`cd` aliased to `z`)
+- eza alias for `ls` (long format, git status, icons, no clutter)
+- fzf config with fd backend, Josean blue/cyan color scheme, eza/bat previews
+- bat theme set to `tokyonight_night`
 - Profile location: `$PROFILE` (usually `Documents\PowerShell\Microsoft.PowerShell_profile.ps1`)
 
 ## System Dependencies
@@ -104,6 +108,11 @@ Everything we've installed, configured, and customized — tracked so it can be 
 | `ruff` | Python linter/formatter |
 | `tree-sitter` | Parser compiler for nvim-treesitter |
 | `zig` | C compiler backend for tree-sitter on Windows |
+| `fzf` | Fuzzy finder (Ctrl+T files, Alt+C dirs) |
+| `fd` | Fast find (fzf backend, replaces default find) |
+| `eza` | Modern ls replacement (icons, git, tree) |
+| `zoxide` | Smarter cd (learns frequent directories) |
+| `bat` | Cat with syntax highlighting (fzf file preview) |
 
 ### Linux (via apt)
 | Package | Purpose |
