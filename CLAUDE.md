@@ -4,7 +4,57 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Purpose
 
-This is a **personal Neovim configuration** based on kickstart.nvim — a documented starting point (not a distribution) meant to be read top-to-bottom, understood, and customized. The owner is learning Neovim and will be iterating on this config over time.
+This is a **multi-machine configuration repo** — Neovim, terminal, shell, and dev tools configs managed in one place. Based on kickstart.nvim, extended with custom plugins, terminal theming, and installer scripts. Deployed across three machines: NBIQ (work laptop), SUNDANCE (home PC), and linux-lab (Ubuntu server).
+
+## Key Files
+
+| File | Purpose |
+|------|---------|
+| `machines.json` | Per-machine settings (paths, OS, shell, font flags) |
+| `CATALOGUE.md` | Full inventory of everything installed and configured |
+| `init.lua` | Neovim config (single-file, machine-specific lines patched at setup) |
+| `terminal/` | Windows Terminal settings, Oh My Posh theme, PowerShell profile, installer |
+
+## First-Time Setup on a New Machine
+
+When Claude Code is run on this repo for the first time on a machine:
+
+1. **Identify the machine** — run `hostname` and match against `machines.json` `hostname_pattern` values.
+2. **If the machine exists in `machines.json` but has empty fields** — detect and fill them:
+   - `user`: `whoami` or `$env:USERNAME`
+   - `home`: `$HOME` or `$env:USERPROFILE`
+   - `repo_path`: the current working directory (where this repo is cloned)
+   - `nvim_config_path`: `$LOCALAPPDATA\nvim` (Windows) or `~/.config/nvim` (Linux)
+   - `default_directory`: ask the user what their preferred working directory is
+   - `terminal_settings_path`: detect Windows Terminal install path
+   - `powershell_profile`: `$PROFILE` in PowerShell
+3. **If the machine is not in `machines.json`** — add a new entry with all detected values.
+4. **Commit the updated `machines.json`** so it's available on all machines via git.
+5. **Run `/setup-nvim`** to patch `init.lua` and install everything.
+
+### Machine-Specific Lines in init.lua
+
+These lines change per machine. Match on content patterns (not line numbers) when patching:
+
+| Pattern | Windows | Linux |
+|---------|---------|-------|
+| `vim.cmd('cd ...')` | Set to `default_directory` from `machines.json` | Set to `default_directory` from `machines.json` |
+| `vim.o.shell = 'pwsh'` block (4 lines) | Keep | Remove entirely |
+| `vim.g.have_nerd_font` | `true` if Nerd Font installed | `false` unless installed |
+| `<leader>tp` terminal keymap | Keep as `<leader>tp` | Change to `<leader>tt`, remove `[P]owershell` from desc |
+
+### Syncing Config to Neovim
+
+After ANY change to config files, copy to the Neovim config location from `machines.json`:
+
+```bash
+# Use nvim_config_path from machines.json for the target
+# Windows (Git Bash)
+cp -r /path/to/repo/* /c/Users/<user>/AppData/Local/nvim/
+
+# Linux
+cp -r /path/to/repo/* ~/.config/nvim/
+```
 
 ## Formatting and Linting
 
@@ -33,6 +83,8 @@ This is a **personal Neovim configuration** based on kickstart.nvim — a docume
 
 ### Plugin Stack
 
+See `CATALOGUE.md` for the full plugin inventory. Key layers:
+
 | Layer | Plugin | Purpose |
 |---|---|---|
 | Fuzzy finder | `telescope.nvim` | File search, grep, LSP navigation, help search |
@@ -40,21 +92,16 @@ This is a **personal Neovim configuration** based on kickstart.nvim — a docume
 | Completion | `blink.cmp` + `LuaSnip` | Autocompletion with snippet support |
 | Formatting | `conform.nvim` | Format-on-save (StyLua for Lua, extensible) |
 | Syntax | `nvim-treesitter` | Treesitter-based highlighting |
+| Theme | `tokyonight.nvim` | Tokyo Night with custom colors, transparent bg |
 | Git | `gitsigns.nvim` | Gutter signs, hunk navigation |
-| UI | `which-key.nvim`, `mini.statusline`, `tokyonight` | Key hints, statusline, colorscheme |
+| UI | `which-key.nvim`, `lualine`, `bufferline`, `dressing` | Key hints, statusline, buffer tabs |
 | Utilities | `mini.ai`, `mini.surround`, `guess-indent`, `todo-comments` | Text objects, surroundings, indentation |
 
 ### Extending the Config
 
-**Optional built-in plugins** live in `lua/kickstart/plugins/` and are enabled by uncommenting `require` lines in `init.lua`'s lazy.setup call:
-- `debug` — DAP debugger setup (Go-focused, extensible)
-- `indent_line` — indentation guides
-- `lint` — nvim-lint (markdownlint by default)
-- `autopairs` — auto-close brackets/quotes
-- `neo-tree` — file explorer sidebar (toggle with `\`)
-- `gitsigns` — extended gitsigns keymaps (hunk stage/reset/blame)
+**Optional built-in plugins** live in `lua/kickstart/plugins/` and are enabled by uncommenting `require` lines in `init.lua`'s lazy.setup call.
 
-**Custom user plugins** go in `lua/custom/plugins/*.lua` — enable by uncommenting `{ import = 'custom.plugins' }` in init.lua. This directory is merge-conflict-safe.
+**Custom user plugins** go in `lua/custom/plugins/*.lua` — enabled via `{ import = 'custom.plugins' }` in init.lua.
 
 ### LSP Configuration Pattern
 
@@ -65,10 +112,11 @@ LSP servers are defined in the `servers` table inside the `nvim-lspconfig` confi
 
 ### Key Leader Mappings
 
-All major keymaps use `<Space>` as leader. The `[S]earch` notation in descriptions indicates which-key grouping:
+All major keymaps use `<Space>` as leader:
 - `<leader>s*` — Search (Telescope): files, grep, help, keymaps, diagnostics, buffers
-- `<leader>h*` — Git hunk operations (when gitsigns keymaps plugin enabled)
-- `<leader>t*` — Toggle: inlay hints, git blame
+- `<leader>h*` — Git hunk operations
+- `<leader>t*` — Tabs, terminal, toggles
+- `<leader>sv/sh/se/sx` — Split management
 - `<leader>f` — Format buffer
 - `<leader>q` — Diagnostic quickfix list
 - `gr*` — LSP: references, implementations, definitions, rename, code action
@@ -77,38 +125,17 @@ All major keymaps use `<Space>` as leader. The `[S]earch` notation in descriptio
 
 Run `:checkhealth kickstart` in Neovim to verify the system setup. The health module (`lua/kickstart/health.lua`) checks for Neovim >= 0.11 and required executables (git, make, unzip, rg).
 
-### Machine-Specific Settings
-
-These lines in `init.lua` change per machine. The `/setup-nvim` skill patches them during setup. If line numbers shift, match on the content patterns instead.
-
-| Line | Setting | Windows | Linux |
-|------|---------|---------|-------|
-| 88 | Default directory | `vim.cmd('cd G:\\Claude')` | `vim.cmd('cd /home/user/projects')` |
-| 91-94 | Shell config | PowerShell (`pwsh`) block | Remove (use default shell) |
-| 104 | Nerd Font flag | `false` or `true` | `false` or `true` |
-| 211 | Terminal keymap | `terminal pwsh` | `terminal` (and `<leader>tt` instead of `<leader>tp`) |
-
-## Dual Config Locations
-
-The repo lives at `G:\claude\kickstart.nvim\`. Neovim reads its config from a platform-specific path:
-- **Windows:** `C:\Users\BAILEY\AppData\Local\nvim\` (i.e., `$LOCALAPPDATA\nvim\`)
-- **Linux:** `~/.config/nvim/`
-
-These two directories must stay in sync. **After ANY change to config files**, copy the changed files to the Neovim config location:
-
-```bash
-# Windows (Git Bash)
-cp -r G:/claude/kickstart.nvim/* C:/Users/BAILEY/AppData/Local/nvim/
-
-# Linux
-cp -r /path/to/repo/* ~/.config/nvim/
-```
-
-Always verify both copies match before finishing.
-
 ## Windows Notes
 
 - `vim.g.have_nerd_font` defaults to `false` — set to `true` if a Nerd Font is installed
 - LuaSnip's jsregexp build step is skipped on Windows by default
 - DAP/delve runs attached (not detached) on Windows to avoid crashes
 - Clipboard syncs via `unnamedplus` (requires win32yank or similar)
+- Shell set to `pwsh` (PowerShell 7 must be in PATH)
+- `tree-sitter` + `zig` needed for treesitter parser compilation
+
+## Linux Notes
+
+- Default shell used (no shell config lines in init.lua)
+- `build-essential` provides the C compiler for treesitter
+- May need Neovim PPA for version >= 0.11

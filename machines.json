@@ -1,0 +1,75 @@
+{
+  "machines": {
+    "NBIQ": {
+      "description": "NBI work laptop",
+      "hostname": "NBIQ-MHXMRMZ6RD",
+      "hostname_pattern": "NBIQ-",
+      "os": "windows",
+      "os_version": "Windows 11 Enterprise",
+      "user": "Robert.Bailey",
+      "home": "C:\\Users\\Robert.Bailey",
+      "repo_path": "C:\\Users\\Robert.Bailey\\Documents\\SKUNKWORKS\\kickstart.nvim",
+      "nvim_config_path": "C:\\Users\\Robert.Bailey\\AppData\\Local\\nvim",
+      "default_directory": "C:\\Users\\Robert.Bailey\\Documents\\SKUNKWORKS",
+      "shell": "pwsh",
+      "terminal": "Windows Terminal",
+      "terminal_settings_path": "C:\\Users\\Robert.Bailey\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json",
+      "powershell_profile": "C:\\Users\\Robert.Bailey\\Documents\\PowerShell\\Microsoft.PowerShell_profile.ps1",
+      "have_nerd_font": true,
+      "package_manager": "scoop",
+      "notes": "Work machine. Admin rights limited. Uses scoop for user-level installs."
+    },
+    "SUNDANCE": {
+      "description": "Home PC",
+      "hostname_pattern": "SUNDANCE",
+      "os": "windows",
+      "os_version": "Windows 11",
+      "user": "",
+      "home": "",
+      "repo_path": "",
+      "nvim_config_path": "",
+      "default_directory": "",
+      "shell": "pwsh",
+      "terminal": "Windows Terminal",
+      "terminal_settings_path": "",
+      "powershell_profile": "",
+      "have_nerd_font": false,
+      "package_manager": "scoop",
+      "notes": "Home Windows PC. Needs initial setup — fill in paths on first use."
+    },
+    "linux-lab": {
+      "description": "Home server",
+      "hostname_pattern": "linux-lab",
+      "os": "linux",
+      "os_version": "Ubuntu",
+      "user": "",
+      "home": "",
+      "repo_path": "",
+      "nvim_config_path": "~/.config/nvim",
+      "default_directory": "",
+      "shell": "bash",
+      "terminal": "",
+      "terminal_settings_path": "",
+      "powershell_profile": "",
+      "have_nerd_font": false,
+      "package_manager": "apt",
+      "notes": "Ubuntu home server. Needs initial setup — fill in paths on first use."
+    }
+  },
+  "platform_defaults": {
+    "windows": {
+      "nvim_config_base": "%LOCALAPPDATA%\\nvim",
+      "shell": "pwsh",
+      "shell_flags": "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command",
+      "terminal_keymap": "<leader>tp",
+      "terminal_keymap_desc": "[T]erminal [P]owershell split"
+    },
+    "linux": {
+      "nvim_config_base": "~/.config/nvim",
+      "shell": "bash",
+      "shell_flags": "",
+      "terminal_keymap": "<leader>tt",
+      "terminal_keymap_desc": "[T]erminal split"
+    }
+  }
+}

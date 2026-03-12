@@ -84,8 +84,8 @@ I hope you enjoy your Neovim journey,
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
 
--- Set default working directory (disabled — uses launch directory instead)
--- vim.cmd('cd G:\\Claude')
+-- Set default working directory
+vim.cmd('cd C:\\Users\\Robert.Bailey\\Documents\\SKUNKWORKS')
 
 -- Use PowerShell for the built-in terminal
 vim.o.shell = 'pwsh'
@@ -227,7 +227,7 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- Open a PowerShell terminal in a right vertical split
-vim.keymap.set('n', '<leader>tp', function() vim.cmd 'vsplit | terminal pwsh' end, { desc = '[T]erminal [P]owershell split' })
+vim.keymap.set('n', '<leader>tp', function() vim.cmd('vsplit | terminal') end, { desc = '[T]erminal [P]owershell split' })
 vim.keymap.set('n', '<leader>ta', function()
   vim.g.blink_cmp_enabled = not (vim.g.blink_cmp_enabled ~= false)
   vim.notify('Autocomplete ' .. (vim.g.blink_cmp_enabled ~= false and 'enabled' or 'disabled'))
