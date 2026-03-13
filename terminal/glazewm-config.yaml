@@ -167,7 +167,7 @@ keybindings:
 
   # ── Window state ─────────────────────────────────────────────
   - commands: ['toggle-tiling-direction']
-    bindings: ['alt+slash']
+    bindings: ['alt+/']
   - commands: ['wm-cycle-focus']
     bindings: ['alt+space']
   - commands: ['toggle-floating --centered']
