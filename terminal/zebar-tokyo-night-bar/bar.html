@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="./styles.css" />
+    <script
+      src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"
+      integrity="sha256-aS0B0wnsaDByLfE16h4MDCP1fQFccysd1YWOcV+gbBo="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel" data-type="module">
+      import React, { useState, useEffect } from 'https://esm.sh/react@18?dev';
+      import { createRoot } from 'https://esm.sh/react-dom@18/client?dev';
+      import * as zebar from 'https://esm.sh/zebar@3.0';
+
+      const providers = zebar.createProviderGroup({
+        glazewm: { type: 'glazewm' },
+        cpu: { type: 'cpu' },
+        memory: { type: 'memory' },
+        battery: { type: 'battery' },
+        date: { type: 'date', formatting: 'EEE d MMM t' },
+      });
+
+      createRoot(document.getElementById('root')).render(<App />);
+
+      function App() {
+        const [output, setOutput] = useState(providers.outputMap);
+
+        useEffect(() => {
+          providers.onOutput(() => setOutput(providers.outputMap));
+        }, []);
+
+        function getBatteryClass() {
+          if (!output.battery) return 'battery';
+          if (output.battery.isCharging) return 'battery charging';
+          if (output.battery.chargePercent < 20) return 'battery low';
+          return 'battery';
+        }
+
+        function getBatteryIcon() {
+          if (!output.battery) return 'nf nf-fa-battery_empty';
+          const pct = output.battery.chargePercent;
+          if (output.battery.isCharging) return 'nf nf-md-battery_charging_50';
+          if (pct >= 90) return 'nf nf-fa-battery_full';
+          if (pct >= 60) return 'nf nf-fa-battery_three_quarters';
+          if (pct >= 40) return 'nf nf-fa-battery_half';
+          if (pct >= 15) return 'nf nf-fa-battery_quarter';
+          return 'nf nf-fa-battery_empty';
+        }
+
+        return (
+          <div className="bar">
+            <div className="left">
+              {output.glazewm && (
+                <div className="workspaces">
+                  {output.glazewm.currentWorkspaces.map(workspace => (
+                    <button
+                      className={`workspace ${workspace.hasFocus ? 'focused' : ''} ${workspace.isDisplayed ? 'displayed' : ''}`}
+                      onClick={() =>
+                        output.glazewm.runCommand(
+                          `focus --workspace ${workspace.name}`,
+                        )
+                      }
+                      key={workspace.name}
+                    >
+                      {workspace.displayName ?? workspace.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="center">
+              {output.date?.formatted}
+            </div>
+
+            <div className="right">
+              {output.glazewm && (
+                <>
+                  {output.glazewm.isPaused && (
+                    <button
+                      className="paused-button"
+                      onClick={() =>
+                        output.glazewm.runCommand('wm-toggle-pause')
+                      }
+                    >
+                      PAUSED
+                    </button>
+                  )}
+                  {output.glazewm.bindingModes.map(mode => (
+                    <button
+                      className="binding-mode"
+                      key={mode.name}
+                      onClick={() =>
+                        output.glazewm.runCommand(
+                          `wm-disable-binding-mode --name ${mode.name}`,
+                        )
+                      }
+                    >
+                      {mode.displayName ?? mode.name}
+                    </button>
+                  ))}
+                  <button
+                    className={`tiling-direction nf ${
+                      output.glazewm.tilingDirection === 'horizontal'
+                        ? 'nf-md-swap_horizontal'
+                        : 'nf-md-swap_vertical'
+                    }`}
+                    onClick={() =>
+                      output.glazewm.runCommand('toggle-tiling-direction')
+                    }
+                  ></button>
+                </>
+              )}
+
+              {output.cpu && (
+                <div className="widget cpu">
+                  <i className="nf nf-oct-cpu"></i>
+                  <span className={output.cpu.usage > 85 ? 'high-usage' : ''}>
+                    {Math.round(output.cpu.usage)}%
+                  </span>
+                </div>
+              )}
+
+              {output.memory && (
+                <div className="widget memory">
+                  <i className="nf nf-fae-chip"></i>
+                  {Math.round(output.memory.usage)}%
+                </div>
+              )}
+
+              {output.battery && (
+                <div className={`widget ${getBatteryClass()}`}>
+                  <i className={getBatteryIcon()}></i>
+                  {Math.round(output.battery.chargePercent)}%
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://github.com/glzr-io/zebar/raw/v3.0.0/resources/zpack-schema.json",
+  "name": "tokyo-night-bar",
+  "version": "1.0.0",
+  "description": "Tokyo Night themed status bar for GlazeWM.",
+  "tags": ["topbar"],
+  "widgets": [
+    {
+      "name": "bar",
+      "htmlPath": "./bar.html",
+      "zOrder": "top_most",
+      "shownInTaskbar": false,
+      "focused": false,
+      "resizable": false,
+      "transparent": true,
+      "includeFiles": ["*.html", "*.css"],
+      "presets": [
+        {
+          "name": "default",
+          "anchor": "top_left",
+          "offsetX": "0px",
+          "offsetY": "0px",
+          "width": "100%",
+          "height": "32px",
+          "monitorSelection": {
+            "type": "all"
+          }
+        }
+      ]
+    }
+  ]
+}

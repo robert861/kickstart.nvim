@@ -11,6 +11,8 @@ Everything installed, configured, and customized — tracked so it can be reprod
 | Oh My Posh | `terminal/tokyonight.omp.json` | Tokyo Night prompt theme |
 | bat | `terminal/tokyonight_night.tmTheme` | Tokyo Night syntax theme (copy to bat themes dir, run `bat cache --build`) |
 | fzf | PS profile `$env:FZF_DEFAULT_OPTS` | Tokyo Night color scheme (inline in profile) |
+| GlazeWM | `terminal/glazewm-config.yaml` | Tokyo Night borders (`#7aa2f7` focused, `#565f89` unfocused) |
+| Zebar | `terminal/zebar-tokyo-night-bar/` | Tokyo Night bar (workspace indicators, system stats, clock) |
 | Windows accent | Manual | `#7aa2f7` (Tokyo Night blue) for pane focus borders |
 
 ## Neovim Configuration
@@ -106,6 +108,63 @@ Everything installed, configured, and customized — tracked so it can be reprod
   - `Ctrl+R` — fuzzy command history search
 - Profile location: `$PROFILE` (usually `Documents\PowerShell\Microsoft.PowerShell_profile.ps1`)
 
+## GlazeWM + Zebar (Windows Tiling WM)
+
+### GlazeWM
+- **Config:** `terminal/glazewm-config.yaml` -> `~/.glzr/glazewm/config.yaml`
+- **Gaps:** 4px inner, 4px outer (36px top for bar)
+- **Borders:** Tokyo Night blue (`#7aa2f7`) focused, comment grey (`#565f89`) unfocused
+- **Modifier key:** Alt (Win key has OS restrictions)
+- **Workspaces:** 9 (Alt+1 through Alt+9)
+- **Auto-launches Zebar** on startup, kills on shutdown
+
+### GlazeWM Keybindings
+| Keys | Action |
+|------|--------|
+| `Alt + H/J/K/L` | Focus left/down/up/right (arrows also work) |
+| `Alt + 1-9` | Switch to workspace |
+| `Alt + A/S` | Previous/next active workspace |
+| `Alt + D` | Last used workspace |
+| `Alt+Shift + H/J/K/L` | Move window in direction |
+| `Alt+Shift + 1-9` | Send window to workspace (and follow) |
+| `Alt+Shift + A/D/S/F` | Move workspace to monitor |
+| `Alt + U/P` | Shrink/grow width |
+| `Alt + I/O` | Shrink/grow height |
+| `Alt + R` | Enter resize mode (HJKL, Escape to exit) |
+| `Alt + /` | Toggle tiling direction |
+| `Alt + F` | Toggle fullscreen |
+| `Alt + T` | Toggle tiling |
+| `Alt+Shift + Space` | Toggle floating (centered) |
+| `Alt + Space` | Cycle focus: tiling -> floating -> fullscreen |
+| `Alt + M` | Minimize |
+| `Alt+Shift + Q` | Close window |
+| `Alt + Enter` | Open Windows Terminal |
+| `Alt+Shift + R` | Reload config |
+| `Alt+Shift + P` | Pause/unpause GlazeWM |
+| `Alt+Shift + E` | Exit GlazeWM |
+
+### Zebar (Status Bar)
+- **Widget pack:** `terminal/zebar-tokyo-night-bar/` -> `~/.glzr/zebar/tokyo-night-bar/`
+- **Settings:** `terminal/zebar-settings.json` -> `~/.glzr/zebar/settings.json`
+- **Height:** 32px, anchored top, spans all monitors
+- **Left:** clickable workspace indicators (solid blue highlight on focused)
+- **Center:** date and time
+- **Right:** tiling direction toggle, CPU %, memory %, battery %
+- **Font:** JetBrainsMono Nerd Font + Nerd Font icons via web import
+
+### GlazeWM + Zebar Setup (per machine)
+1. `scoop bucket add extras` (if not already)
+2. `scoop install extras/glazewm extras/zebar`
+3. Copy configs from repo:
+   ```bash
+   mkdir -p ~/.glzr/glazewm ~/.glzr/zebar/tokyo-night-bar
+   cp terminal/glazewm-config.yaml ~/.glzr/glazewm/config.yaml
+   cp terminal/zebar-tokyo-night-bar/* ~/.glzr/zebar/tokyo-night-bar/
+   cp terminal/zebar-settings.json ~/.glzr/zebar/settings.json
+   ```
+4. Launch: `glazewm` (Zebar starts automatically)
+5. Window rules ignore Zebar so it stays visible across all workspaces
+
 ## System Dependencies
 
 ### Windows (via scoop)
@@ -124,6 +183,7 @@ Everything installed, configured, and customized — tracked so it can be reprod
 | `bat` | Cat with syntax highlighting (fzf file preview) |
 | `lazygit` | Git TUI (used by lazygit.nvim plugin) |
 | `glazewm` | Tiling window manager (i3-inspired, scoop extras bucket) |
+| `zebar` | Status bar for GlazeWM (scoop extras bucket) |
 
 ### Linux (via apt)
 | Package | Purpose |
@@ -172,6 +232,7 @@ Claude: on each machine, go through every item below. Check the box when confirm
 - [x] `bat`
 - [x] `lazygit`
 - [x] `glazewm` (scoop extras)
+- [x] `zebar` (scoop extras)
 
 #### Nerd Font
 - [x] JetBrainsMono Nerd Font installed (`scoop bucket add nerd-fonts && scoop install nerd-fonts/JetBrainsMono-NF`)
@@ -223,6 +284,15 @@ Claude: on each machine, go through every item below. Check the box when confirm
 - [x] `Ctrl+R` opens fzf history
 - [x] `<leader>tp` opens PS7 terminal split (run `$PSVersionTable` to confirm)
 
+#### GlazeWM + Zebar
+- [x] GlazeWM config deployed (`~/.glzr/glazewm/config.yaml`)
+- [x] Zebar Tokyo Night bar deployed (`~/.glzr/zebar/tokyo-night-bar/`)
+- [x] Zebar settings deployed (`~/.glzr/zebar/settings.json`)
+- [x] GlazeWM launches Zebar on startup
+- [x] Zebar ignored in window rules (stays visible across workspaces)
+- [x] Workspace switching works (Alt+1-9)
+- [x] Bar shows workspaces, date/time, CPU, memory, battery
+
 ### SUNDANCE (Home PC — Windows)
 
 #### Scoop Packages
@@ -239,6 +309,7 @@ Claude: on each machine, go through every item below. Check the box when confirm
 - [x] `bat`
 - [x] `lazygit` (installed via winget)
 - [ ] `glazewm` (scoop extras)
+- [ ] `zebar` (scoop extras)
 
 #### Nerd Font
 - [x] JetBrainsMono Nerd Font installed
@@ -289,6 +360,15 @@ Claude: on each machine, go through every item below. Check the box when confirm
 - [x] `Alt+C` opens fzf directory picker
 - [x] `Ctrl+R` opens fzf history
 - [x] `<leader>tp` opens PS7 terminal split
+
+#### GlazeWM + Zebar
+- [ ] GlazeWM config deployed (`~/.glzr/glazewm/config.yaml`)
+- [ ] Zebar Tokyo Night bar deployed (`~/.glzr/zebar/tokyo-night-bar/`)
+- [ ] Zebar settings deployed (`~/.glzr/zebar/settings.json`)
+- [ ] GlazeWM launches Zebar on startup
+- [ ] Zebar ignored in window rules (stays visible across workspaces)
+- [ ] Workspace switching works (Alt+1-9)
+- [ ] Bar shows workspaces, date/time, CPU, memory, battery
 
 ### linux-lab (Home server — Ubuntu)
 
