@@ -235,7 +235,7 @@ Claude: on each machine, go through every item below. Check the box when confirm
 - [x] `eza`
 - [x] `zoxide`
 - [x] `bat`
-- [ ] `lazygit`
+- [x] `lazygit` (installed via winget)
 
 #### Nerd Font
 - [x] JetBrainsMono Nerd Font installed
@@ -256,17 +256,17 @@ Claude: on each machine, go through every item below. Check the box when confirm
 - [x] `cd` aliased to zoxide
 
 #### bat Theme
-- [ ] `tokyonight_night.tmTheme` installed to bat themes dir
-- [ ] `bat cache --build` run
+- [x] `tokyonight_night.tmTheme` installed to bat themes dir
+- [x] `bat cache --build` run
 - [x] `$env:BAT_THEME` set in profile
 
 #### Windows Terminal
 - [x] `settings.json` deployed
 - [x] Default profile set to PowerShell 7
-- [ ] Starting directory updated (was `G:\`, check if still valid)
+- [x] Starting directory set to `G:\`
 - [x] JetBrainsMono Nerd Font configured
 - [x] Acrylic opacity 90/80
-- [ ] Windows accent color set to `#7aa2f7`
+- [x] Windows accent color set to `#7aa2f7`
 
 #### Neovim
 - [x] `init.lua` copied to `AppData\Local\nvim\`
