@@ -245,7 +245,8 @@ Claude: on each machine, go through every item below. Check the box when confirm
 - [x] Tokyo Night theme copied to `~\.config\oh-my-posh\tokyonight.omp.json`
 
 #### PowerShell Profile
-- [x] Full profile deployed to `$PROFILE` (oh-my-posh, zoxide, eza, fzf, bat, PSFzf)
+- [ ] Updated profile deployed to `$PROFILE` (fzf preview fix)
+- [ ] `fzf-preview.cmd` copied to `~/.config/fzf/preview.cmd`
 - [x] Ctrl+T fzf file search working (smart preview: bat for files, eza for dirs)
 - [x] Alt+C fzf directory jump working
 - [x] Ctrl+R fzf history search working
@@ -308,8 +309,8 @@ Claude: on each machine, go through every item below. Check the box when confirm
 - [x] `zoxide`
 - [x] `bat`
 - [x] `lazygit` (installed via winget)
-- [ ] `glazewm` (scoop extras)
-- [ ] `zebar` (scoop extras)
+- [x] `glazewm` (scoop extras)
+- [x] `zebar` (scoop extras)
 
 #### Nerd Font
 - [x] JetBrainsMono Nerd Font installed
@@ -362,13 +363,13 @@ Claude: on each machine, go through every item below. Check the box when confirm
 - [x] `<leader>tp` opens PS7 terminal split
 
 #### GlazeWM + Zebar
-- [ ] GlazeWM config deployed (`~/.glzr/glazewm/config.yaml`)
-- [ ] Zebar Tokyo Night bar deployed (`~/.glzr/zebar/tokyo-night-bar/`)
-- [ ] Zebar settings deployed (`~/.glzr/zebar/settings.json`)
-- [ ] GlazeWM launches Zebar on startup
-- [ ] Zebar ignored in window rules (stays visible across workspaces)
-- [ ] Workspace switching works (Alt+1-9)
-- [ ] Bar shows workspaces, date/time, CPU, memory, battery
+- [x] GlazeWM config deployed (`~/.glzr/glazewm/config.yaml`)
+- [x] Zebar Tokyo Night bar deployed (`~/.glzr/zebar/tokyo-night-bar/`)
+- [x] Zebar settings deployed (`~/.glzr/zebar/settings.json`)
+- [x] GlazeWM launches Zebar on startup
+- [x] Zebar ignored in window rules (stays visible across workspaces)
+- [x] Workspace switching works (Alt+1-9)
+- [x] Bar shows workspaces, date/time, CPU, memory, battery
 
 ### linux-lab (Home server — Ubuntu)
 
