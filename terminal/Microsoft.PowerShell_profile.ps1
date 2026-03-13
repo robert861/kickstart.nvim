@@ -23,7 +23,7 @@ $env:FZF_CTRL_T_COMMAND = "fd --hidden --strip-cwd-prefix --exclude .git"
 $env:FZF_ALT_C_COMMAND = "fd --type=d --hidden --strip-cwd-prefix --exclude .git"
 
 # Preview: bat for files (Ctrl+T), eza tree for dirs (Alt+C)
-$env:FZF_CTRL_T_OPTS = '--preview "bat -n --color=always --line-range :500 {}"'
+$env:FZF_CTRL_T_OPTS = '--preview "if exist {}\\* (eza --tree --color=always --icons=always -L 2 {}) else (bat -n --color=always --line-range :500 {})"'
 $env:FZF_ALT_C_OPTS = '--preview "eza --tree --color=always {}"'
 
 # Register fzf keybindings in PSReadLine (Ctrl+T, Alt+C, Ctrl+R)

@@ -59,7 +59,14 @@ if (Test-Path $PROFILE) {
     Write-Host "[ok] Created PowerShell profile at $PROFILE" -ForegroundColor Green
 }
 
-# 5. Copy Windows Terminal settings
+# 5. Install bat Tokyo Night theme
+$BatThemeDir = "$(bat --config-dir)\themes"
+if (-not (Test-Path $BatThemeDir)) { New-Item -ItemType Directory -Path $BatThemeDir -Force | Out-Null }
+Copy-Item "$ScriptDir\tokyonight_night.tmTheme" "$BatThemeDir\tokyonight_night.tmTheme" -Force
+bat cache --build | Out-Null
+Write-Host "[ok] bat theme 'tokyonight_night' installed and cache rebuilt" -ForegroundColor Green
+
+# 6. Copy Windows Terminal settings
 $WtPaths = @(
     "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState",
     "$env:LOCALAPPDATA\Microsoft\Windows Terminal"
@@ -83,7 +90,7 @@ if (-not $WtInstalled) {
     Write-Host "[!!] Windows Terminal not found - copy windows-terminal-settings.json manually" -ForegroundColor Red
 }
 
-# 6. Remind about Windows accent color (controls pane focus border)
+# 7. Remind about Windows accent color (controls pane focus border)
 Write-Host ""
 Write-Host "[!!] MANUAL STEP: Set Windows accent color to match Tokyo Night" -ForegroundColor Yellow
 Write-Host "     The split-pane focus border uses the Windows accent color (not a Terminal setting)." -ForegroundColor Yellow

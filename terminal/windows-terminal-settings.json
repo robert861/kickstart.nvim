@@ -46,7 +46,7 @@
             },
             "opacity": 90,
             "scrollbarState": "hidden",
-            "startingDirectory": "G:\\",
+            "startingDirectory": "%USERPROFILE%",
             "useAcrylic": true,
             "padding": "8",
             "unfocusedAppearance":
