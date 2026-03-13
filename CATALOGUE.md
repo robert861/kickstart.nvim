@@ -123,6 +123,7 @@ Everything installed, configured, and customized — tracked so it can be reprod
 | `zoxide` | Smarter cd (learns frequent directories) |
 | `bat` | Cat with syntax highlighting (fzf file preview) |
 | `lazygit` | Git TUI (used by lazygit.nvim plugin) |
+| `glazewm` | Tiling window manager (i3-inspired, scoop extras bucket) |
 
 ### Linux (via apt)
 | Package | Purpose |
@@ -170,6 +171,7 @@ Claude: on each machine, go through every item below. Check the box when confirm
 - [x] `zoxide`
 - [x] `bat`
 - [x] `lazygit`
+- [x] `glazewm` (scoop extras)
 
 #### Nerd Font
 - [x] JetBrainsMono Nerd Font installed (`scoop bucket add nerd-fonts && scoop install nerd-fonts/JetBrainsMono-NF`)
@@ -236,6 +238,7 @@ Claude: on each machine, go through every item below. Check the box when confirm
 - [x] `zoxide`
 - [x] `bat`
 - [x] `lazygit` (installed via winget)
+- [ ] `glazewm` (scoop extras)
 
 #### Nerd Font
 - [x] JetBrainsMono Nerd Font installed
